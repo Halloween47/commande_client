@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_commande_client_tree" model="ir.ui.view">
+        <field name="name">commande.client.tree</field>
+        <field name="model">commande.client</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="produit"/>
+                <field name="quantite"/>
+                <field name="prix_total"/>
+                <field name="statut"/>
+                <field name="date_commande"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_commande_client_form" model="ir.ui.view">
+        <field name="name">commande.client.form</field>
+        <field name="model">commande.client</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <!-- <button name="action_valider" type="object" string="Valider" states="brouillon"/> -->
+                    <!-- <button name="action_valider" type="object" string="Valider" attrs="{'invisible': [('statut', '!=', 'brouillon')]}"/> -->
+                    
+                    <field name="statut" widget="statusbar" statusbar_visible="brouillon,validee,envoyee"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="produit"/>
+                        <field name="quantite"/>
+                        <field name="prix_unitaire"/>
+                        <field name="prix_total" readonly="1"/>
+                        <field name="date_commande"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_commande_client_kanban" model="ir.ui.view">
+        <field name="name">commande.client.kanban</field>
+        <field name="model">commande.client</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="produit"/>
+                <field name="statut"/>
+                <field name="prix_total"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <strong><field name="name"/></strong><br/>
+                            <span>Produit : <field name="produit"/></span><br/>
+                            <span>Prix total : <field name="prix_total"/></span><br/>
+                            <t t-if="record.statut.raw_value == 'validee'">
+                                <span class="badge badge-success"><field name="statut"/></span>
+                            </t>
+                            <t t-elif="record.statut.raw_value == 'envoyee'">
+                                <span class="badge badge-danger"><field name="statut"/></span>
+                            </t>
+                            <t t-else="">
+                                <span class="badge badge-secondary"><field name="statut"/></span>
+                            </t>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <menuitem id="menu_commande_root" name="Réponse à la candidature 🎯"/>
+    <menuitem id="menu_commande_client" name="Module Démo Odoo 16" parent="menu_commande_root"/>
+
+    <record id="action_commande_client" model="ir.actions.act_window">
+        <field name="name">Module Démo Odoo</field>
+        <field name="res_model">commande.client</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <menuitem id="menu_commande_client_items" name="Liste" parent="menu_commande_client" action="action_commande_client"/>
+</odoo>

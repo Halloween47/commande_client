@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_commande_client_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="commande">
+                <div class="page">
+                    <h2>Commande Client</h2>
+                    <p><strong>Client :</strong> <t t-esc="commande.client_id.name"/></p>
+                    <p><strong>Produit :</strong> <t t-esc="commande.produit"/></p>
+                    <p><strong>Quantité :</strong> <t t-esc="commande.quantite"/></p>
+                    <p><strong>Prix unitaire :</strong> <t t-esc="commande.prix_unitaire"/></p>
+                    <p><strong>Prix total :</strong> <t t-esc="commande.prix_total"/></p>
+                    <p><strong>Statut :</strong> <t t-esc="commande.statut"/></p>
+                    <p><strong>Date :</strong> <t t-esc="commande.date_commande"/></p>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="report_commande_client"
+        model="commande.client"
+        string="Imprimer la commande"
+        report_type="qweb-pdf"
+        name="commande_client.report_commande_client_document"
+        file="commande_client.report_commande_client_document"
+        print_report_name="'Commande - %s' % (object.name)"
+    />
+</odoo>
